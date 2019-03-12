@@ -21,16 +21,9 @@ def oneHotEncodeMultiDomain(df):
         if df[attr].dtype.name == 'category':
             oneHot = pandas.get_dummies(df[attr], prefix=attr)
             df.drop(columns=attr, inplace=True)
-            # df = df.join(oneHot)
-            # print(oneHot)
             # Fix for '?' values somehow being used even though it's not in any records
             for a in oneHot.columns:
                 if '?' in str(a) and oneHot[a].nunique() == 1:
-                    # print('\n' + str(a))
-                    # print(oneHot[a].nunique())
-                    # print(oneHot[a].max())
-                    # print(oneHot[oneHot[a] == oneHot[a].max()])
-                    # print('\n')
                     oneHot.drop(columns=a, inplace=True)
             df = pandas.concat([df, oneHot], axis=1)
     return df
@@ -89,6 +82,7 @@ if __name__ == "__main__":
             elif response == '2':
                 df = removeContinuousAttributes(df)
             elif response == '3':
+                print(df)
                 df.to_csv(modifiedFilename, index=False)
                 running = False
                 print('Saving to ' + str(modifiedFilename) + ' and quitting...')
